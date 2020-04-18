@@ -3,7 +3,19 @@
 #include "game.h"
 #include "renderer.h"
 
-int main() {
+int main(int argc, char *argv[]) {
+
+  // default path if the event config file is 
+  // in the same directory 
+  // with the executable file
+  std::string config_event_file{"example_config.cfg"};
+
+  // check if the file name is provided from the command line
+  if(argc == 2)
+  {
+    config_event_file = argv[1];
+  }
+
   constexpr std::size_t kFramesPerSecond{60};
   constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
   constexpr std::size_t kScreenWidth{640};
