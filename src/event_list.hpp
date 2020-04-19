@@ -27,9 +27,25 @@ class EventList {
   
   EventList() = default;
 
+  EventList(EventList && rhs) :
+    _list{std::move(rhs._list)}
+  {}
+
+  EventList & operator=(EventList && rhs)
+  {
+    if(&rhs != this)
+    {
+      _list = std::move(rhs._list);
+    }
+    return *this;
+  }
+
   void add(T && event);
   // we return the list of events that meet required criteria
   std::list<T> get(const unsigned score_trigger);
+
+  auto begin() { return _list.begin(); }
+  auto end() { return _list.end(); }
 
  private:
   std::list<T> _list{};
