@@ -1,8 +1,9 @@
 #include "event.hpp"
 
-SpeedEvent::SpeedEvent(const unsigned score_trigger, const float speed) :
+SpeedEvent::SpeedEvent(const unsigned score_trigger, const float speed, const Snake & snake) :
     BaseEvent{score_trigger, Color{0, 204, 0}},
-    speed_{speed}
+    speed_{speed},
+    snake_{snake}
 {
 }
 

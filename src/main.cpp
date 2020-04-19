@@ -7,6 +7,7 @@
 #include "config_file_parser.hpp"
 #include "event_list.hpp"
 #include "event.hpp"
+#include "snake.h"
 
 template<typename T>
 void display_exception(T & exception)
@@ -42,7 +43,8 @@ std::vector<std::pair<std::string, std::string>> load_config(const std::string &
   }
 }
 
-EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::string, std::string>> && params)
+EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::string, std::string>> && params,
+                                                    Snake & snake)
 {
   const float speed_up{0.04f};
   const float speed_down{-0.04f};
@@ -64,12 +66,12 @@ EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::s
 
       if(event.first == "speed_up")
       {
-        ptr_e event = std::make_unique<SpeedEvent>(score_trigger, speed_up);
+        ptr_e event = std::make_unique<SpeedEvent>(score_trigger, speed_up, snake);
         list.add(std::move(event));
       }
       else if(event.first == "speed_down")
       {
-        ptr_e event = std::make_unique<SpeedEvent>(score_trigger, speed_down);
+        ptr_e event = std::make_unique<SpeedEvent>(score_trigger, speed_down, snake);
         list.add(std::move(event));
       }
       else if(event.first == "extra_score")
@@ -112,10 +114,12 @@ EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::s
     }
 }
 
-EventList<std::unique_ptr<BaseEvent>> get_events(std::string & fileName)
+EventList<std::unique_ptr<BaseEvent>> get_events(std::string & fileName,
+                                                 Snake & snake)
 {
   auto params = load_config(fileName);
-  auto list = std::move(create_events(std::move(params)));  
+  auto list = std::move(create_events(std::move(params),
+                                      snake));  
 
   return list;
 }
@@ -133,18 +137,21 @@ int main(int argc, char *argv[]) {
     config_event_file = argv[1];
   }
 
-  auto events = std::move(get_events(config_event_file));
+  constexpr std::size_t kGridWidth{32};
+  constexpr std::size_t kGridHeight{32};
+  Snake snake(kGridWidth, kGridHeight);
+
+  auto events = std::move(get_events(config_event_file, 
+                                     snake));
 
   constexpr std::size_t kFramesPerSecond{60};
   constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
   constexpr std::size_t kScreenWidth{640};
   constexpr std::size_t kScreenHeight{640};
-  constexpr std::size_t kGridWidth{32};
-  constexpr std::size_t kGridHeight{32};
-
+  
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
-  Game game(kGridWidth, kGridHeight);
+  Game game(kGridWidth, kGridHeight, snake);
   game.Run(controller, renderer, kMsPerFrame, std::move(events));
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";

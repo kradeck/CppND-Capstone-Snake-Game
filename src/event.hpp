@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include "SDL.h"
+#include "snake.h"
 
 struct Color
 {
@@ -57,13 +58,14 @@ class BaseEvent
 class SpeedEvent : public BaseEvent
 {
   public:
-  SpeedEvent(const unsigned score_trigger, const float speed);
+  SpeedEvent(const unsigned score_trigger, const float speed, const Snake & snake);
   ~SpeedEvent() = default;
 
   void operator()() override { std::cout << "speed class\n";} 
 
   private:
   float speed_{};
+  const Snake & snake_;
 };
 
 class ScoreEvent : public BaseEvent
