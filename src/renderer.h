@@ -16,7 +16,7 @@ class Renderer {
   ~Renderer();
 
   void Render(Snake const snake, SDL_Point const &food,
-              std::list<std::unique_ptr<BaseEvent>>& events);
+              std::list<std::unique_ptr<BaseEvent>> & events);
   void UpdateWindowTitle(int score, int fps);
 
  private:
@@ -28,7 +28,8 @@ class Renderer {
   const std::size_t grid_width;
   const std::size_t grid_height;
 
-  void RenderEvents(std::list<std::unique_ptr<BaseEvent>>& events);
+  void RenderEvents(std::list<std::unique_ptr<BaseEvent>> & events,
+                    SDL_Rect & block);
 };
 
 #endif

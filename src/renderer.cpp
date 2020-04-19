@@ -55,7 +55,7 @@ void Renderer::Render(Snake const snake, SDL_Point const &food,
   SDL_RenderFillRect(sdl_renderer, &block);
 
   // Render events
-  RenderEvents(events);
+  RenderEvents(events, block);
 
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -84,12 +84,9 @@ void Renderer::UpdateWindowTitle(int score, int fps) {
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }
 
-void Renderer::RenderEvents(std::list<std::unique_ptr<BaseEvent>>& events)
+void Renderer::RenderEvents(std::list<std::unique_ptr<BaseEvent>> & events,
+                            SDL_Rect & block)
 {
-  SDL_Rect block;
-  block.w = screen_width / grid_width;
-  block.h = screen_height / grid_height;
-
   for(auto it = events.begin(); it != events.end();)
   {
     if((*it)->Visible())
@@ -102,12 +99,7 @@ void Renderer::RenderEvents(std::list<std::unique_ptr<BaseEvent>>& events)
       block.x = (*it)->X() * block.w;
       block.y = (*it)->Y() * block.h;
       SDL_RenderFillRect(sdl_renderer, &block);
-
-      ++it;
     }
-    else
-    {
-      ++it;
-    }    
+    ++it;    
   }
 }
