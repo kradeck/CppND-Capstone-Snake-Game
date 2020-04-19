@@ -24,8 +24,12 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
     
     // Get the events that should appear in the current score number.
-    current_events = std::move(events.get(static_cast<unsigned>(score)));
-    
+    new_events = std::move(events.get(static_cast<unsigned>(score)));
+    if(!new_events.empty())
+    {
+      current_events = std::move(new_events);
+    }
+
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();

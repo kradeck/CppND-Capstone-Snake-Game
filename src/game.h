@@ -32,7 +32,7 @@ class Game {
   // to store events in the current game loop iteration
   std::list<std::unique_ptr<BaseEvent>> current_events{};
   // to store events from the previous game loop iteration
-  std::list<std::unique_ptr<BaseEvent>> past_events{};
+  std::list<std::unique_ptr<BaseEvent>> new_events{};
 
   int score{0};
 
