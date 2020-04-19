@@ -22,7 +22,10 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
   while (running) {
     frame_start = SDL_GetTicks();
-
+    
+    // Get the events that should appear in the current score number.
+    current_events = std::move(events.get(static_cast<unsigned>(score)));
+    
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
@@ -58,7 +61,7 @@ void Game::PlaceFood() {
     y = random_h(engine);
     // Check that the location is not occupied by a snake item before placing
     // food.
-    if (!snake.SnakeCell(x, y)) {
+    if (!snake.SnakeCell(x, y) && !EventsCell(x, y)) {
       food.x = x;
       food.y = y;
       return;
@@ -82,7 +85,94 @@ void Game::Update() {
     snake.GrowBody();
     snake.speed += 0.02;
   }
+
+  CheckEvents(new_x, new_y);
+  PlaceEvents();  
 }
 
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
+
+void Game::CheckEvents(const int x, const int y) 
+{
+  for(auto it = current_events.begin(); it != current_events.end();)
+  {
+    if((*it)->Visible())
+    {
+      // Check if there is event over here.
+      if ((*it)->X() == x && (*it)->Y() == y)
+      {
+        // perform action
+        (*(*it))();
+
+        // remove event
+        it = current_events.erase(it);
+      }
+    }
+    else
+    {
+      ++it;
+    }    
+  }
+}
+
+void Game::PlaceEvents()
+{
+  // Place non visible events.
+  for(auto it = current_events.begin(); it != current_events.end();)
+  {
+    if(!(*it)->Visible())
+    {
+      int x{}, y{};
+      while (true) 
+      {
+        x = random_w(engine);
+        y = random_h(engine);
+        std::cout << "loop\n";
+        // Check that the location is not occupied by a snake,
+        // food or another event before placing this event.
+        if (!snake.SnakeCell(x, y) && !FoodCell(x,y) && !EventsCell(x,y)) 
+        {
+          (*it)->X(x);
+          (*it)->Y(y);
+          (*it)->SetVisible(true);
+          break;
+        }
+      }
+      ++it;     
+    }
+    else
+    {
+      ++it;
+    }    
+  }
+}
+
+bool Game::FoodCell(const int x, const int y)
+{
+  if (food.x == x && food.y == y)
+  {
+    return true;
+  }
+  return false;
+}
+
+bool Game::EventsCell(const int x, const int y)
+{
+  for(auto it = current_events.begin(); it != current_events.end();)
+  {
+    if((*it)->Visible())
+    {
+      if((*it)->X() == x && (*it)->Y() == y)
+      {
+        return true;
+      }
+      ++it;
+    }
+    else
+    {
+      ++it;
+    }    
+  }
+  return false;
+}

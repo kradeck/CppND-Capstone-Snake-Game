@@ -29,10 +29,20 @@ class Game {
   std::uniform_int_distribution<int> random_w;
   std::uniform_int_distribution<int> random_h;
 
+  // to store events in the current game loop iteration
+  std::list<std::unique_ptr<BaseEvent>> current_events{};
+  // to store events from the previous game loop iteration
+  std::list<std::unique_ptr<BaseEvent>> past_events{};
+
   int score{0};
 
   void PlaceFood();
   void Update();
+
+  void CheckEvents(const int x, const int y);
+  void PlaceEvents();
+  bool FoodCell(const int x, const int y);
+  bool EventsCell(const int x, const int y);
 };
 
 #endif
