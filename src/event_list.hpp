@@ -50,7 +50,7 @@ std::list<T> EventList<T>::get(const unsigned score_trigger)
 
   std::list<T> events{};
 
-  std::remove_if(_list.begin(), _list.end(), [](auto & e)
+  std::remove_if(_list.begin(), _list.end(), [&](auto & e)
   {
     if(e.trigger() == score_trigger)
     {
