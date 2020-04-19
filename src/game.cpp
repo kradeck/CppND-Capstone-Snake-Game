@@ -99,9 +99,6 @@ int Game::GetSize() const { return snake.size; }
 
 void Game::CheckEvents(const int x, const int y) 
 {
-  // Needed to prevent simultaneous access with the renderer.
-  //std::lock_guard<std::mutex> guard(mutex);
-
   for(auto it = current_events.begin(); it != current_events.end();)
   {
     if((*it)->Visible())
@@ -123,9 +120,6 @@ void Game::CheckEvents(const int x, const int y)
 
 void Game::PlaceEvents()
 {
-  // Needed to prevent simultaneous access with the renderer.
-  //std::lock_guard<std::mutex> guard(mutex);
-
   // Place non visible events.
   for(auto it = current_events.begin(); it != current_events.end();)
   {

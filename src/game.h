@@ -3,7 +3,6 @@
 
 #include <random>
 #include <memory>
-#include <mutex>
 
 #include "SDL.h"
 #include "controller.h"
@@ -29,8 +28,6 @@ class Game {
   std::mt19937 engine;
   std::uniform_int_distribution<int> random_w;
   std::uniform_int_distribution<int> random_h;
-
-  std::mutex mutex;
 
   // to store events in the current game loop iteration
   std::list<std::unique_ptr<BaseEvent>> current_events{};
