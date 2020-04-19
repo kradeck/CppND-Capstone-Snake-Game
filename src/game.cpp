@@ -11,7 +11,8 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
-               std::size_t target_frame_duration) {
+               std::size_t target_frame_duration,
+               EventList<std::unique_ptr<BaseEvent>> && events) {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;

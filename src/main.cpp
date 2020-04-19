@@ -112,16 +112,12 @@ EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::s
     }
 }
 
-void get_events(std::string & fileName)
+EventList<std::unique_ptr<BaseEvent>> get_events(std::string & fileName)
 {
   auto params = load_config(fileName);
   auto list = std::move(create_events(std::move(params)));  
 
-  for(auto & l : list)
-  {
-    (*l)();
-    std::cout << l->ScoreTrigger() << "\n";
-  }
+  return list;
 }
 
 int main(int argc, char *argv[]) {
@@ -137,7 +133,7 @@ int main(int argc, char *argv[]) {
     config_event_file = argv[1];
   }
 
-  /*auto events = */get_events(config_event_file);
+  auto events = std::move(get_events(config_event_file));
 
   constexpr std::size_t kFramesPerSecond{60};
   constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
@@ -149,7 +145,7 @@ int main(int argc, char *argv[]) {
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
   Game game(kGridWidth, kGridHeight);
-  game.Run(controller, renderer, kMsPerFrame);
+  game.Run(controller, renderer, kMsPerFrame, std::move(events));
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";
   std::cout << "Size: " << game.GetSize() << "\n";
