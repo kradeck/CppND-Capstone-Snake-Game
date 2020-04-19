@@ -14,6 +14,7 @@
 #pragma once
 
 #include <iostream>
+#include "SDL.h"
 
 class BaseEvent 
 {
@@ -22,14 +23,19 @@ class BaseEvent
   BaseEvent(unsigned score_trigger) : score_trigger_{score_trigger} {};
   ~BaseEvent() = default;
 
-  /*BaseEvent(BaseEvent && rhs);
-  BaseEvent & operator=(BaseEvent && rhs);*/
-
   virtual void operator()(){ std::cout << "base class\n";} 
   unsigned ScoreTrigger() const { return score_trigger_; }
+  bool Visible() const { return visible_; }
+  void SetVisible(const bool & visible) { visible_ = visible; }
+  int X() const { return position_.x; };
+  void X(int x) { position_.x = x; }
+  int Y() const { return position_.y; };
+  void Y(int y) { position_.y = y; }
 
  private:
-  unsigned score_trigger_{}; // todo as shared pointer
+  unsigned score_trigger_{};
+  bool visible_{false};
+  SDL_Point position_{};
 };
 
 class SpeedEvent : public BaseEvent

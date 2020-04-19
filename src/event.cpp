@@ -1,19 +1,5 @@
 #include "event.hpp"
 
-/*BaseEvent::BaseEvent(BaseEvent && rhs) :
-    score_trigger_{rhs.score_trigger_}
-{    
-}
-
-BaseEvent & BaseEvent::operator=(BaseEvent && rhs)
-{
-    if(&rhs != this)
-    {
-        score_trigger_ = rhs.score_trigger_;
-    }   
-    return *this; 
-}*/
-
 SpeedEvent::SpeedEvent(const unsigned score_trigger, const float speed) :
     BaseEvent{score_trigger},
     speed_{speed}
