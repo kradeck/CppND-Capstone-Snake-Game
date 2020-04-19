@@ -1,11 +1,19 @@
 #include <iostream>
 #include <memory>
+
 #include "controller.h"
 #include "game.h"
 #include "renderer.h"
 #include "config_file_parser.hpp"
 #include "event_list.hpp"
 #include "event.hpp"
+
+template<typename T>
+void display_exception(T & exception)
+{
+  std::cout << "Please check if the event config file is correct: "
+            << exception.what() << "\n";
+}
 
 // I don't want the ConfigFileParser object alive for the whole program
 // so with the variables scope rules tha usage is in a separate function
@@ -24,7 +32,7 @@ std::vector<std::pair<std::string, std::string>> load_config(const std::string &
 
     return params;
   } catch(std::ios_base::failure & e) {
-    std::cout << e.what() << "\n";
+    display_exception(e);
     // empty vector is returned - the game should run without events
     return std::vector<std::pair<std::string, std::string>>{};
   } catch (...) {
@@ -82,22 +90,22 @@ EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::s
     return list;
 
   } catch (std:: invalid_argument & e) {
-      std::cout << "please check if the event config file is correct: "
-                << e.what() << "\n";
+      display_exception(e);
+
       // empty list is returned - the game should run without events
       return EventList<ptr_e>{};
     } catch (std::out_of_range & e) {
-      std::cout << "please check if the event config file is correct: "
-                << e.what() << "\n";
+      display_exception(e);
+
       // empty list is returned - the game should run without events
       return EventList<ptr_e>{};
     } catch (std::runtime_error & e) {
-      std::cout << "please check if the event config file is correct: "
-                << e.what() << "\n"; 
+      display_exception(e);
+
       // empty list is returned - the game should run without events 
       return EventList<ptr_e>{};
     } catch (...) {
-      std::cout << "please check if the event config file is correct: "
+      std::cout << "Please check if the event config file is correct: "
                 << "unknown error\n";
       // empty list is returned - the game should run without events
       return EventList<ptr_e>{};
@@ -112,6 +120,7 @@ void get_events(std::string & fileName)
   for(auto & l : list)
   {
     (*l)();
+    std::cout << l->ScoreTrigger() << "\n";
   }
 }
 
