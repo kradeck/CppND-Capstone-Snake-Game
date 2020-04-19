@@ -16,11 +16,21 @@
 #include <iostream>
 #include "SDL.h"
 
+struct Color
+{
+  uint8_t r{255};
+  uint8_t g{255};
+  uint8_t b{255};
+  uint8_t a{255};
+};
+
 class BaseEvent 
 {
  public:
   
-  BaseEvent(unsigned score_trigger) : score_trigger_{score_trigger} {};
+  BaseEvent(unsigned score_trigger, Color color = {255,255,255,255}) : 
+    score_trigger_{score_trigger},
+    color_{color} {};
   ~BaseEvent() = default;
 
   virtual void operator()(){ std::cout << "base class\n";} 
@@ -32,10 +42,16 @@ class BaseEvent
   int Y() const { return position_.y; };
   void Y(int y) { position_.y = y; }
 
+  uint8_t R() const { return color_.r; }
+  uint8_t G() const { return color_.g; }
+  uint8_t B() const { return color_.b; }
+  uint8_t A() const { return color_.a; }
+
  private:
   unsigned score_trigger_{};
   bool visible_{false};
   SDL_Point position_{};
+  Color color_{};
 };
 
 class SpeedEvent : public BaseEvent

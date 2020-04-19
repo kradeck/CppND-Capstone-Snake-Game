@@ -1,19 +1,19 @@
 #include "event.hpp"
 
 SpeedEvent::SpeedEvent(const unsigned score_trigger, const float speed) :
-    BaseEvent{score_trigger},
+    BaseEvent{score_trigger, Color{0, 204, 0}},
     speed_{speed}
 {
 }
 
 ScoreEvent::ScoreEvent(const unsigned score_strigger, 
                        const int score_bonus) :
-                        BaseEvent{score_strigger},
+                        BaseEvent{score_strigger, Color{255, 0, 0}},
                         score_bonus_{score_bonus}
 {
 }
 
 KeyboardEvent::KeyboardEvent(const unsigned score_trigger) :
-    BaseEvent{score_trigger}
+    BaseEvent{score_trigger, Color{102, 0, 102}}
 {
 }
