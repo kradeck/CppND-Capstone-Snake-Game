@@ -17,23 +17,55 @@ void Controller::HandleInput(bool &running, Snake &snake) const {
     } else if (e.type == SDL_KEYDOWN) {
       switch (e.key.keysym.sym) {
         case SDLK_UP:
-          ChangeDirection(snake, Snake::Direction::kUp,
+          if(reversed_)
+          {
+            ChangeDirection(snake, Snake::Direction::kDown,
+                          Snake::Direction::kUp);
+          }
+          else
+          {
+            ChangeDirection(snake, Snake::Direction::kUp,
                           Snake::Direction::kDown);
+          }         
           break;
 
         case SDLK_DOWN:
-          ChangeDirection(snake, Snake::Direction::kDown,
+          if(reversed_)
+          {
+          ChangeDirection(snake, Snake::Direction::kUp,
+                          Snake::Direction::kDown);
+          }
+          else
+          {
+            ChangeDirection(snake, Snake::Direction::kDown,
                           Snake::Direction::kUp);
+          }          
           break;
 
         case SDLK_LEFT:
-          ChangeDirection(snake, Snake::Direction::kLeft,
+          if(reversed_)
+          {
+          ChangeDirection(snake, Snake::Direction::kRight,
+                          Snake::Direction::kLeft);
+          }
+          else
+          {
+            ChangeDirection(snake, Snake::Direction::kLeft,
                           Snake::Direction::kRight);
+          }          
           break;
 
         case SDLK_RIGHT:
-          ChangeDirection(snake, Snake::Direction::kRight,
-                          Snake::Direction::kLeft);
+          if(reversed_)
+          {
+            ChangeDirection(snake, Snake::Direction::kLeft,
+                            Snake::Direction::kRight);
+          }
+          else
+          {
+            ChangeDirection(snake, Snake::Direction::kRight,
+                            Snake::Direction::kLeft);
+          }          
           break;
       }
     }
