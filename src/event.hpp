@@ -15,46 +15,53 @@
 
 #include <iostream>
 
-class BaseEvent {
+class BaseEvent 
+{
  public:
   
-  BaseEvent() = default;
+  BaseEvent(unsigned score_trigger) : score_trigger_{score_trigger} {};
+  ~BaseEvent() = default;
 
-  void operator()(){ std::cout << "base class\n";} 
+  /*BaseEvent(BaseEvent && rhs);
+  BaseEvent & operator=(BaseEvent && rhs);*/
+
+  virtual void operator()(){ std::cout << "base class\n";} 
+  unsigned ScoreTrigger() const { return score_trigger_; }
 
  private:
-  unsigned score_trigger{}; // todo as shared pointer
+  unsigned score_trigger_{}; // todo as shared pointer
 };
 
 class SpeedEvent : public BaseEvent
 {
   public:
+  SpeedEvent(const unsigned score_trigger, const float speed);
+  ~SpeedEvent() = default;
 
-  SpeedEvent() = default;
-
-  void operator()(){ std::cout << "speed class\n";} 
+  void operator()() override { std::cout << "speed class\n";} 
 
   private:
-  int speed{};
+  float speed_{};
 };
 
 class ScoreEvent : public BaseEvent
 {
   public:
 
-  ScoreEvent() = default;
+  ScoreEvent(const unsigned score_trigger, const int score_bonus);
+  ~ScoreEvent() = default;
 
-  void operator()(){ std::cout << "score class\n";} 
+  void operator()() override { std::cout << "score class\n";} 
 
   private:
-  int score{};
+  int score_bonus_{};
 };
 
 class KeyboardEvent : public BaseEvent
 {
   public:
+  KeyboardEvent(const unsigned score_trigger);
+  ~KeyboardEvent() = default;
 
-  KeyboardEvent() = default;
-
-  void operator()(){ std::cout << "keyboard class\n";} 
+  void operator()() override { std::cout << "keyboard class\n";} 
 };
