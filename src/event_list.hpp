@@ -47,6 +47,7 @@ class EventList {
   // useful in debug
   auto begin() const { return list_.begin(); }
   auto end() const { return list_.end(); }
+  auto size() const { return list_.size(); }
 
  private:
   std::list<T> list_{};
@@ -67,15 +68,18 @@ std::list<T> EventList<T>::get(const unsigned score_trigger)
 
   std::list<T> events{};
 
-  std::remove_if(list_.begin(), list_.end(), [&](auto & e)
+  for(auto it = list_.begin(); it != list_.end();)
   {
-    if(e.trigger() == score_trigger)
+    if((*it)->ScoreTrigger() == score_trigger)
     {
-      events.push_back(std::move(e));
-      return true;
+      events.push_back(std::move(*it));
+      it = list_.erase(it);
     }
-    return false;
-  });
+    else
+    {
+      ++it;
+    }    
+  }
 
   return events;
 }
