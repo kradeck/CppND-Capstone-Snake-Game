@@ -16,6 +16,7 @@
 #include <iostream>
 #include "SDL.h"
 #include "snake.h"
+#include "controller.h"
 
 struct Color
 {
@@ -84,8 +85,11 @@ class ScoreEvent : public BaseEvent
 class KeyboardEvent : public BaseEvent
 {
   public:
-  KeyboardEvent(const unsigned score_trigger);
+  KeyboardEvent(const unsigned score_trigger, Controller & controller);
   ~KeyboardEvent() = default;
 
   void operator()() override { std::cout << "keyboard class\n";} 
+
+  private:
+  Controller & controller_;
 };

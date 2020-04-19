@@ -27,7 +27,8 @@ ScoreEvent::ScoreEvent(const unsigned score_strigger,
 {
 }
 
-KeyboardEvent::KeyboardEvent(const unsigned score_trigger) :
-    BaseEvent{score_trigger, Color{102, 0, 102}}
+KeyboardEvent::KeyboardEvent(const unsigned score_trigger, Controller & controller) :
+    BaseEvent{score_trigger, Color{102, 0, 102}},
+    controller_{controller}
 {
 }

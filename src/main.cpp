@@ -44,7 +44,9 @@ std::vector<std::pair<std::string, std::string>> load_config(const std::string &
 }
 
 EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::string, std::string>> && params,
-                                                    Snake & snake)
+                                                    Snake & snake,
+                                                    /*Score & score,*/
+                                                    Controller & controller)
 {
   constexpr float speed_up{0.05f};
   constexpr float speed_down{-0.05f};
@@ -81,7 +83,7 @@ EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::s
       }
       else if(event.first == "reverse_keyboard")
       {
-        ptr_e event = std::make_unique<KeyboardEvent>(score_trigger);
+        ptr_e event = std::make_unique<KeyboardEvent>(score_trigger, controller);
         list.add(std::move(event));
       }
       else 
@@ -115,11 +117,15 @@ EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::s
 }
 
 EventList<std::unique_ptr<BaseEvent>> get_events(std::string & fileName,
-                                                 Snake & snake)
+                                                 Snake & snake,
+                                                 /*Score & score,*/
+                                                 Controller & controller)
 {
   auto params = load_config(fileName);
   auto list = std::move(create_events(std::move(params),
-                                      snake));  
+                                      snake,
+                                      /*score,*/
+                                      controller));  
 
   return list;
 }
@@ -140,17 +146,18 @@ int main(int argc, char *argv[]) {
   constexpr std::size_t kGridWidth{32};
   constexpr std::size_t kGridHeight{32};
   Snake snake(kGridWidth, kGridHeight);
-
+  Controller controller;
   auto events = std::move(get_events(config_event_file, 
-                                     snake));
+                                     snake,
+                                     /*score,*/
+                                     controller));
 
   constexpr std::size_t kFramesPerSecond{60};
   constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
   constexpr std::size_t kScreenWidth{640};
   constexpr std::size_t kScreenHeight{640};
   
-  Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
-  Controller controller;
+  Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);  
   Game game(kGridWidth, kGridHeight, snake);
   game.Run(controller, renderer, kMsPerFrame, std::move(events));
   std::cout << "Game has terminated successfully!\n";
