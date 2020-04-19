@@ -32,3 +32,8 @@ KeyboardEvent::KeyboardEvent(const unsigned score_trigger, Controller & controll
     controller_{controller}
 {
 }
+
+void KeyboardEvent::operator()()
+{ 
+    controller_.Reverse(controller_.IsReversed() ? false : true);    
+}

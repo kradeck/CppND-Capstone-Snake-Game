@@ -88,7 +88,7 @@ class KeyboardEvent : public BaseEvent
   KeyboardEvent(const unsigned score_trigger, Controller & controller);
   ~KeyboardEvent() = default;
 
-  void operator()() override { std::cout << "keyboard class\n";} 
+  void operator()() override; 
 
   private:
   Controller & controller_;
