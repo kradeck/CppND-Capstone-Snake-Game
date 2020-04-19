@@ -46,8 +46,8 @@ std::vector<std::pair<std::string, std::string>> load_config(const std::string &
 EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::string, std::string>> && params,
                                                     Snake & snake)
 {
-  const float speed_up{0.04f};
-  const float speed_down{-0.04f};
+  const float speed_up{0.05f};
+  const float speed_down{-0.05f};
   // bonus can also be negative so int is used instead of unsigned,
   // but in this version only positive bonus usage is provided
   const int score_bonus{10}; 
