@@ -28,14 +28,14 @@ class EventList {
   EventList() = default;
 
   EventList(EventList && rhs) :
-    _list{std::move(rhs._list)}
+    list_{std::move(rhs.list_)}
   {}
 
   EventList & operator=(EventList && rhs)
   {
     if(&rhs != this)
     {
-      _list = std::move(rhs._list);
+      list_ = std::move(rhs.list_);
     }
     return *this;
   }
@@ -44,29 +44,30 @@ class EventList {
   // we return the list of events that meet required criteria
   std::list<T> get(const unsigned score_trigger);
 
-  auto begin() { return _list.begin(); }
-  auto end() { return _list.end(); }
+  // useful in debug
+  auto begin() const { return list_.begin(); }
+  auto end() const { return list_.end(); }
 
  private:
-  std::list<T> _list{};
-  std::mutex _mutex{};
+  std::list<T> list_{};
+  std::mutex mutex_{};
 };
 
 template <typename T>
 void EventList<T>::add(T && event)
 {
-  std::lock_guard<std::mutex> guard(_mutex);
-  _list.push_back(std::move(event));
+  std::lock_guard<std::mutex> guard(mutex_);
+  list_.push_back(std::move(event));
 }
 
 template <typename T>
 std::list<T> EventList<T>::get(const unsigned score_trigger)
 {
-  std::unique_lock<std::mutex> guard(_mutex);
+  std::unique_lock<std::mutex> guard(mutex_);
 
   std::list<T> events{};
 
-  std::remove_if(_list.begin(), _list.end(), [&](auto & e)
+  std::remove_if(list_.begin(), list_.end(), [&](auto & e)
   {
     if(e.trigger() == score_trigger)
     {
