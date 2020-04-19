@@ -100,7 +100,7 @@ int Game::GetSize() const { return snake.size; }
 void Game::CheckEvents(const int x, const int y) 
 {
   // Needed to prevent simultaneous access with the renderer.
-  std::lock_guard<std::mutex> guard(mutex);
+  //std::lock_guard<std::mutex> guard(mutex);
 
   for(auto it = current_events.begin(); it != current_events.end();)
   {
@@ -115,20 +115,17 @@ void Game::CheckEvents(const int x, const int y)
         // remove event
         it = current_events.erase(it);
       }
-      ++it;
-    }
-    else
-    {
-      ++it;
-    }    
+      else { ++it; }
+    }  
+    else { ++it; }
   }
 }
 
 void Game::PlaceEvents()
 {
   // Needed to prevent simultaneous access with the renderer.
-  std::lock_guard<std::mutex> guard(mutex);
-  
+  //std::lock_guard<std::mutex> guard(mutex);
+
   // Place non visible events.
   for(auto it = current_events.begin(); it != current_events.end();)
   {
@@ -149,13 +146,9 @@ void Game::PlaceEvents()
           (*it)->SetVisible(true);
           break;
         }
-      }
-      ++it;     
+      } // while          
     }
-    else
-    {
-      ++it;
-    }    
+    ++it;   
   }
 }
 
@@ -178,12 +171,8 @@ bool Game::EventsCell(const int x, const int y)
       {
         return true;
       }
-      ++it;
     }
-    else
-    {
-      ++it;
-    }    
+    ++it;    
   }
   return false;
 }
