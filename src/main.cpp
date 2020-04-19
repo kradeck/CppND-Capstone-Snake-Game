@@ -3,11 +3,12 @@
 #include "game.h"
 #include "renderer.h"
 #include "config_file_parser.hpp"
+#include "event_list.hpp"
 
 // I don't want the ConfigFileParser object alive for the whole program
 // so with the variables scope rules tha usage is in a separate function
 // (also for better refactorization).
-void load_config(const std::string & fileName)
+std::vector<std::pair<std::string, std::string>> load_config(const std::string & fileName)
 {
   try{
     ConfigFileParser fp(fileName);
@@ -19,10 +20,24 @@ void load_config(const std::string & fileName)
       std::cout << e.first <<" " << e.second << "\n";
     }*/
 
+    return params;
   } catch(std::ios_base::failure & e) {
     std::cout << e.what() << "\n";
+    // empty vector is returned - the game should run without events
+    return std::vector<std::pair<std::string, std::string>>{};
   } catch (...) {
     std::cout << "Cannot load event config file: unknown error :(\n";
+    // empty vector is returned - the game should run without events
+    return std::vector<std::pair<std::string, std::string>>{};
+  }
+}
+
+void get_events(std::string & fileName)
+{
+  auto params = load_config(fileName);
+  for(auto & e : params)
+  {
+    std::cout << e.first <<" " << e.second << "\n";
   }
 }
 
@@ -39,7 +54,7 @@ int main(int argc, char *argv[]) {
     config_event_file = argv[1];
   }
 
-  load_config(config_event_file);
+  /*auto events = */get_events(config_event_file);
 
   constexpr std::size_t kFramesPerSecond{60};
   constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
