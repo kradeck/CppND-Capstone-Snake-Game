@@ -130,7 +130,7 @@ void Game::PlaceEvents()
       {
         x = random_w(engine);
         y = random_h(engine);
-        std::cout << "loop\n";
+
         // Check that the location is not occupied by a snake,
         // food or another event before placing this event.
         if (!snake.SnakeCell(x, y) && !FoodCell(x,y) && !EventsCell(x,y)) 
