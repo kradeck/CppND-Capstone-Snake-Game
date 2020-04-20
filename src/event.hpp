@@ -7,8 +7,11 @@
 */
 
 /*
- * The file provides a base class for events object named EventBase.
- * Each event must inherite EventBase.
+ * The file provides a base class named EventBase for event objects .
+ * Each event must inherit from the EventBase.
+ * 
+ * Each event should override operator() method - where the event action
+ * should be implemented.
  */
 
 #pragma once
@@ -36,7 +39,7 @@ class BaseEvent
     color_{color} {};
   ~BaseEvent() = default;
 
-  virtual void operator()(){ std::cout << "base class\n";} 
+  virtual void operator()(){} 
   unsigned ScoreTrigger() const { return score_trigger_; }
   bool Visible() const { return visible_; }
   void SetVisible(const bool & visible) { visible_ = visible; }
