@@ -77,7 +77,7 @@ class ScoreEvent : public BaseEvent
   ScoreEvent(const unsigned score_trigger, const int score_bonus, Score & score);
   ~ScoreEvent() = default;
 
-  void operator()() override { std::cout << "score class\n";} 
+  void operator()() override; 
 
   private:
   int score_bonus_{};

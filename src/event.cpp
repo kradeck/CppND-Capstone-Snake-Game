@@ -29,6 +29,11 @@ ScoreEvent::ScoreEvent(const unsigned score_strigger,
 {
 }
 
+void ScoreEvent::operator()()
+{ 
+    score_.add(score_bonus_);
+} 
+
 KeyboardEvent::KeyboardEvent(const unsigned score_trigger, Controller & controller) :
     BaseEvent{score_trigger, Color{102, 0, 102}},
     controller_{controller}
