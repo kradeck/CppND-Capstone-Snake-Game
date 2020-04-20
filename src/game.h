@@ -39,9 +39,13 @@ class Game {
   void PlaceFood();
   void Update();
 
+  // to check if any event should occur
   void CheckEvents(const int x, const int y);
+  //to draw events
   void PlaceEvents();
+  // to check if cell is not taken by the food
   bool FoodCell(const int x, const int y);
+  // to check if cell is not taken by any event
   bool EventsCell(const int x, const int y);
 };
 

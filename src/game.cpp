@@ -90,8 +90,9 @@ void Game::Update() {
     snake.GrowBody();
     snake.speed += 0.02;
   }
-
+  // check if any event should occur
   CheckEvents(new_x, new_y);
+  // draw events
   PlaceEvents();  
 }
 
