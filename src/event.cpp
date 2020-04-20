@@ -21,9 +21,11 @@ void SpeedEvent::operator()()
 }
 
 ScoreEvent::ScoreEvent(const unsigned score_strigger, 
-                       const int score_bonus) :
+                       const int score_bonus,
+                        Score & score) :
                         BaseEvent{score_strigger, Color{255, 0, 0}},
-                        score_bonus_{score_bonus}
+                        score_bonus_{score_bonus},
+                        score_{score}
 {
 }
 

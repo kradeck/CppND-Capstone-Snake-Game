@@ -8,6 +8,7 @@
 #include "event_list.hpp"
 #include "event.hpp"
 #include "snake.h"
+#include "score.h"
 
 template<typename T>
 void display_exception(T & exception)
@@ -45,7 +46,7 @@ std::vector<std::pair<std::string, std::string>> load_config(const std::string &
 
 EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::string, std::string>> && params,
                                                     Snake & snake,
-                                                    /*Score & score,*/
+                                                    Score & score,
                                                     Controller & controller)
 {
   constexpr float speed_up{0.05f};
@@ -78,7 +79,7 @@ EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::s
       }
       else if(event.first == "extra_score")
       {
-        ptr_e event = std::make_unique<ScoreEvent>(score_trigger, score_bonus);
+        ptr_e event = std::make_unique<ScoreEvent>(score_trigger, score_bonus, score);
         list.add(std::move(event));
       }
       else if(event.first == "reverse_keyboard")
@@ -118,13 +119,13 @@ EventList<std::unique_ptr<BaseEvent>> create_events(std::vector<std::pair<std::s
 
 EventList<std::unique_ptr<BaseEvent>> get_events(std::string & fileName,
                                                  Snake & snake,
-                                                 /*Score & score,*/
+                                                 Score & score,
                                                  Controller & controller)
 {
   auto params = load_config(fileName);
   auto list = std::move(create_events(std::move(params),
                                       snake,
-                                      /*score,*/
+                                      score,
                                       controller));  
 
   return list;
@@ -146,10 +147,11 @@ int main(int argc, char *argv[]) {
   constexpr std::size_t kGridWidth{32};
   constexpr std::size_t kGridHeight{32};
   Snake snake(kGridWidth, kGridHeight);
+  Score score;
   Controller controller;
   auto events = std::move(get_events(config_event_file, 
                                      snake,
-                                     /*score,*/
+                                     score,
                                      controller));
 
   constexpr std::size_t kFramesPerSecond{60};
