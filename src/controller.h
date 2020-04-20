@@ -14,6 +14,8 @@ class Controller {
   void ChangeDirection(Snake &snake, Snake::Direction input,
                        Snake::Direction opposite) const;
 
+  // if true - the controller is reversed: kUp replaced with kDown and
+  // kLeft replaced with kRight
   bool reversed_{false};
 };
 

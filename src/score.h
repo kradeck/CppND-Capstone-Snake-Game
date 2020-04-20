@@ -15,6 +15,7 @@
 class Score 
 {
  public:
+  // can be negative - no checking if below zero when adding
   void add(const int value) { score_ += value; }
   auto get() const { return score_; }
 

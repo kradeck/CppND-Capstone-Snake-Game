@@ -41,7 +41,7 @@ class EventList {
   }
 
   void add(T && event);
-  // we return the list of events that meet required criteria
+  // return the list of events that meet required criteria
   std::list<T> get(const unsigned score_trigger);
 
   // useful in debug
@@ -80,6 +80,5 @@ std::list<T> EventList<T>::get(const unsigned score_trigger)
       ++it;
     }    
   }
-
   return events;
 }

@@ -148,6 +148,7 @@ void Game::PlaceEvents()
   }
 }
 
+// to check if cell is not taken by the food
 bool Game::FoodCell(const int x, const int y)
 {
   if (food.x == x && food.y == y)
@@ -157,6 +158,7 @@ bool Game::FoodCell(const int x, const int y)
   return false;
 }
 
+// to check if cell is not taken by any event
 bool Game::EventsCell(const int x, const int y)
 {
   for(auto it = current_events.begin(); it != current_events.end();)
