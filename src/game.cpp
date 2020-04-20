@@ -2,8 +2,9 @@
 #include <iostream>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height, Snake & snake_)
+Game::Game(std::size_t grid_width, std::size_t grid_height, Snake & snake_, Score & score_)
     : snake(snake_),
+      score(score_),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
@@ -24,7 +25,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
     
     // Get the events that should appear in the current score number.
-    new_events = std::move(events.get(static_cast<unsigned>(score)));
+    new_events = std::move(events.get(static_cast<unsigned>(score.get())));
     if(!new_events.empty())
     {
       current_events = std::move(new_events);
@@ -44,7 +45,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(score.get(), frame_count);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -83,7 +84,7 @@ void Game::Update() {
 
   // Check if there's food over here
   if (food.x == new_x && food.y == new_y) {
-    score++;
+    score.add(1);
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
@@ -94,7 +95,7 @@ void Game::Update() {
   PlaceEvents();  
 }
 
-int Game::GetScore() const { return score; }
+int Game::GetScore() const { return score.get(); }
 int Game::GetSize() const { return snake.size; }
 
 void Game::CheckEvents(const int x, const int y) 

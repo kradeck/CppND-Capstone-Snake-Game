@@ -13,7 +13,7 @@
 
 class Game {
  public:
-  Game(std::size_t grid_width, std::size_t grid_height, Snake & snake);
+  Game(std::size_t grid_width, std::size_t grid_height, Snake & snake, Score & score);
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration,
            EventList<std::unique_ptr<BaseEvent>> && events);
@@ -34,7 +34,7 @@ class Game {
   // to store events from the previous game loop iteration
   std::list<std::unique_ptr<BaseEvent>> new_events{};
 
-  int score{0};
+  Score & score;
 
   void PlaceFood();
   void Update();

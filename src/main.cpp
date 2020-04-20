@@ -160,7 +160,7 @@ int main(int argc, char *argv[]) {
   constexpr std::size_t kScreenHeight{640};
   
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);  
-  Game game(kGridWidth, kGridHeight, snake);
+  Game game(kGridWidth, kGridHeight, snake, score);
   game.Run(controller, renderer, kMsPerFrame, std::move(events));
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";
